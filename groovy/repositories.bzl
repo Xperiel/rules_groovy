@@ -26,7 +26,7 @@ def rules_groovy_dependencies():
         sha256 = "1d154ff89708d457f5e8d93f74cf5bb88b80506b0239e16db9b34a6e13a0299c",
     )
 
-   http_archive(
+    http_archive(
         name = "groovy_sdk_artifact",
         urls = [
             "https://repo1.maven.org/maven2/org/apache/groovy/groovy/4.0.21/groovy-4.0.21.jar",
