@@ -71,7 +71,7 @@ java_import(
         artifact = "org.spockframework:spock-core:2.0-M5-groovy-3.0",
         server_urls = ["https://repo1.maven.org/maven2"],
         licenses = ["notice"],
-        artifact_sha256 = "28c2d23134dd1e1c34ba0c8c16fa12a548ec2d7f7d1e3f1e8f7d573b82c15120",
+        artifact_sha256 = "694b91f73d7f50fd30cea595774a7284e0e8964fbc2f93e121cc92b09016aff8",
     )
     native.bind(
         name = "spock",
