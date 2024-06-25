@@ -35,12 +35,12 @@ def rules_groovy_dependencies():
         build_file_content = """
 filegroup(
     name = "sdk",
-    srcs = glob(["groovy-4.0.21/**"]),
+    srcs = glob(["groovy-4.0.21.jar"]),
     visibility = ["//visibility:public"],
 )
 java_import(
     name = "groovy",
-    jars = ["groovy-4.0.21/lib/groovy-4.0.21.jar"],
+    jars = ["groovy-4.0.21.jar"],
     visibility = ["//visibility:public"],
 )
 """,
