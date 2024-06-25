@@ -59,7 +59,7 @@ java_import(
         artifact = "junit:junit:4.13.2",
         server_urls = ["https://repo1.maven.org/maven2"],
         licenses = ["notice"],
-        artifact_sha256 = "f231f58054dce34ad967a1a5dfc07321468a3f2a1b3c2a5b9b72f335c82a57c8",
+        artifact_sha256 = "8e495b634469d64fb8acfa3495a065cbacc8a0fff55ce1e31007be4c16dc57d3",
     )
     native.bind(
         name = "junit",
