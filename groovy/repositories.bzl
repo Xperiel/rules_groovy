@@ -21,28 +21,26 @@ def rules_groovy_dependencies():
         http_archive,
         name = "rules_java",
         urls = [
-            "https://mirror.bazel.build/github.com/bazelbuild/rules_java/archive/rules_java-0.1.1.tar.gz",
-            "https://github.com/bazelbuild/rules_java/releases/download/0.1.1/rules_java-0.1.1.tar.gz",
+            "https://github.com/bazelbuild/rules_java/releases/download/7.6.4/rules_java-7.6.4.tar.gz",
         ],
-        sha256 = "220b87d8cfabd22d1c6d8e3cdb4249abd4c93dcc152e0667db061fb1b957ee68",
+        sha256 = "1d154ff89708d457f5e8d93f74cf5bb88b80506b0239e16db9b34a6e13a0299c",
     )
 
     http_archive(
         name = "groovy_sdk_artifact",
         urls = [
-            "https://mirror.bazel.build/dl.bintray.com/groovy/maven/apache-groovy-binary-2.5.8.zip",
-            "https://dl.bintray.com/groovy/maven/apache-groovy-binary-2.5.8.zip",
+            "https://dl.bintray.com/groovy/maven/apache-groovy-binary-4.0.12.zip",
         ],
-        sha256 = "49fb14b98f9fed1744781e4383cf8bff76440032f58eb5fabdc9e67a5daa8742",
+        sha256 = "f0e8e161d2a18e44d2879ea202c412d122396056d6c0c4b892ff5e73514cbcd5",
         build_file_content = """
 filegroup(
     name = "sdk",
-    srcs = glob(["groovy-2.5.8/**"]),
+    srcs = glob(["groovy-4.0.12/**"]),
     visibility = ["//visibility:public"],
 )
 java_import(
     name = "groovy",
-    jars = ["groovy-2.5.8/lib/groovy-2.5.8.jar"],
+    jars = ["groovy-4.0.12/lib/groovy-4.0.12.jar"],
     visibility = ["//visibility:public"],
 )
 """,
@@ -58,10 +56,10 @@ java_import(
 
     jvm_maven_import_external(
         name = "junit_artifact",
-        artifact = "junit:junit:4.12",
-        server_urls = ["https://mirror.bazel.build/repo1.maven.org/maven2"],
+        artifact = "junit:junit:4.13.2",
+        server_urls = ["https://repo1.maven.org/maven2"],
         licenses = ["notice"],
-        artifact_sha256 = "59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a",
+        artifact_sha256 = "f231f58054dce34ad967a1a5dfc07321468a3f2a1b3c2a5b9b72f335c82a57c8",
     )
     native.bind(
         name = "junit",
@@ -70,10 +68,10 @@ java_import(
 
     jvm_maven_import_external(
         name = "spock_artifact",
-        artifact = "org.spockframework:spock-core:1.3-groovy-2.5",
-        server_urls = ["https://mirror.bazel.build/repo1.maven.org/maven2"],
+        artifact = "org.spockframework:spock-core:2.0-M5-groovy-3.0",
+        server_urls = ["https://repo1.maven.org/maven2"],
         licenses = ["notice"],
-        artifact_sha256 = "4e5c788ce5bac0bda41cd066485ce84ab50e3182d81a6789b82a3e265cd85f90",
+        artifact_sha256 = "28c2d23134dd1e1c34ba0c8c16fa12a548ec2d7f7d1e3f1e8f7d573b82c15120",
     )
     native.bind(
         name = "spock",
