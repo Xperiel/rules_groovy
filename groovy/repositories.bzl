@@ -31,7 +31,7 @@ def rules_groovy_dependencies():
         urls = [
             "https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-binary/3.0.9/groovy-binary-3.0.9.zip",
         ],
-        sha256 = "b1cc918a5f8aad73909a1a31d86e5700fb24270de8e5b5ad0dab7e2ed82f93d8",
+        sha256 = "eb34f4ee229b1a424adb87df5b999f66d1b1285694e5332d0800896744c2e421",
         build_file_content = """
 filegroup(
     name = "sdk",
