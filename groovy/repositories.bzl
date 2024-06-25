@@ -26,21 +26,21 @@ def rules_groovy_dependencies():
         sha256 = "1d154ff89708d457f5e8d93f74cf5bb88b80506b0239e16db9b34a6e13a0299c",
     )
 
-    http_archive(
+   http_archive(
         name = "groovy_sdk_artifact",
         urls = [
-            "https://repo1.maven.org/maven2/org/codehaus/groovy/groovy-binary/3.0.9/groovy-binary-3.0.9.zip",
+            "https://repo1.maven.org/maven2/org/apache/groovy/groovy/4.0.21/groovy-4.0.21.jar",
         ],
-        sha256 = "eb34f4ee229b1a424adb87df5b999f66d1b1285694e5332d0800896744c2e421",
+        sha256 = "c845659fafbf620cb7721b5f64834f5321da9e52d17bbb58580aa10ca0b21985",
         build_file_content = """
 filegroup(
     name = "sdk",
-    srcs = glob(["groovy-3.0.9/**"]),
+    srcs = glob(["groovy-4.0.21/**"]),
     visibility = ["//visibility:public"],
 )
 java_import(
     name = "groovy",
-    jars = ["groovy-3.0.9/lib/groovy-3.0.9.jar"],
+    jars = ["groovy-4.0.21/lib/groovy-4.0.21.jar"],
     visibility = ["//visibility:public"],
 )
 """,
