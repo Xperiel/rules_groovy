@@ -226,9 +226,9 @@ def _groovy_test_impl(ctx):
 
     # print the JAVA_HOME value in the console
     print("JAVA_HOME=%s" % ctx.attr._jdk[java_common.JavaRuntimeInfo].java_home)
-    
+
     # Write a file that executes JUnit on the inferred classes
-    cmd = "$JAVA_HOME/bin/java %s -cp %s org.junit.runner.JUnitCore %s\n" % (
+    cmd = "/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java %s -cp %s org.junit.runner.JUnitCore %s\n" % (
         " ".join(ctx.attr.jvm_flags),
         ":".join([dep.short_path for dep in all_deps.to_list()]),
         " ".join(classes),
