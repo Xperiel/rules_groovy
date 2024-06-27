@@ -68,7 +68,7 @@ java_import(
 
     jvm_maven_import_external(
         name = "spock_artifact",
-        artifact = "org.spockframework:spock-core:2.4-M4-groovy-4.0",
+        artifact = "org.spockframework:spock-core:2.4-M1-groovy-4.0",
         server_urls = ["https://repo1.maven.org/maven2"],
         licenses = ["notice"],
         artifact_sha256 = "99c70a66a32d56d243008fafcda4c5838273c18cc42a470f879e2920e7cea163",
