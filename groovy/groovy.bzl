@@ -204,7 +204,7 @@ def path_to_class(path):
         fail("groovy_test sources must be under src/test/java or src/test/groovy")
 
 def _groovy_test_impl(ctx):
-    # Collect jars from the Groovy sdk
+    # Collect jars from the Groovy SDK
     groovy_sdk_jars = [
         file
         for file in ctx.files._groovysdk
@@ -224,12 +224,11 @@ def _groovy_test_impl(ctx):
     # Infer a class name from each src file
     classes = [path_to_class(src.path) for src in ctx.files.srcs]
 
-    # print the JAVA_HOME value in the console
-    print("JAVA_HOME=%s" % ctx.attr._jdk[java_common.JavaRuntimeInfo].java_home)
+    # Debugging: Print the classpath
+    print("Classpath: %s" % ":".join([dep.short_path for dep in all_deps.to_list()]))
 
-    # Write a file that executes JUnit on the inferred classes
-    # cmd = "/Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home/bin/java %s -cp %s org.junit.runner.JUnitCore %s\n" % (
-    cmd = "java %s -cp %s org.junit.runner.JUnitCore %s\n" % (
+    # Write a file that executes Spock tests
+    cmd = "java %s -cp %s org.junit.platform.console.ConsoleLauncher --select-class %s\n" % (
         " ".join(ctx.attr.jvm_flags),
         ":".join([dep.short_path for dep in all_deps.to_list()]),
         " ".join(classes),
