@@ -227,8 +227,8 @@ def _groovy_test_impl(ctx):
     # Debugging: Print the classpath
     print("Classpath: %s" % ":".join([dep.short_path for dep in all_deps.to_list()]))
 
-    # Write a file that executes Spock tests
-    cmd = "java %s -cp %s org.junit.platform.console.ConsoleLauncher --select-class %s\n" % (
+    # Write a file that executes JUnit on the inferred classes
+    cmd = "java %s -cp %s org.junit.runner.JUnitCore %s\n" % (
         " ".join(ctx.attr.jvm_flags),
         ":".join([dep.short_path for dep in all_deps.to_list()]),
         " ".join(classes),
@@ -241,6 +241,64 @@ def _groovy_test_impl(ctx):
     # Return all dependencies needed to run the tests
     return struct(
         runfiles = ctx.runfiles(files = all_deps.to_list() + ctx.files.data + ctx.files._jdk),
+    )
+
+def spock_test(
+        name,
+        specs,
+        deps = [],
+        groovy_srcs = [],
+        java_srcs = [],
+        data = [],
+        resources = [],
+        jvm_flags = [],
+        size = "small",
+        tags = []):
+    groovy_lib_deps = deps + [
+        "@maven//:junit",
+        "@maven//:org_spockframework_spock_core",
+    ]
+    test_deps = deps + [
+        "@maven//:junit",
+        "@maven//:org_spockframework_spock_core",
+    ]
+
+    if len(specs) == 0:
+        fail("Must provide at least one file in specs")
+
+    # Put all Java sources into a Java library
+    if java_srcs:
+        java_library(
+            name = name + "-javalib",
+            srcs = java_srcs,
+            testonly = 1,
+            deps = deps + [
+                "@maven//:junit",
+                "@maven//:org_spockframework_spock_core",
+            ],
+        )
+        groovy_lib_deps += [name + "-javalib"]
+        test_deps += [name + "-javalib"]
+
+    # Put all specs and Groovy sources into a Groovy library
+    groovy_library(
+        name = name + "-groovylib",
+        srcs = specs + groovy_srcs,
+        testonly = 1,
+        deps = groovy_lib_deps,
+    )
+    test_deps += [name + "-groovylib"]
+
+    # Create a groovy test
+    _groovy_test(
+        name = name,
+        deps = test_deps,
+        srcs = specs,
+        data = data,
+        resources = resources,
+        jvm_flags = jvm_flags,
+        size = size,
+        tags = tags,
     )
 
 _groovy_test = rule(
@@ -337,64 +395,6 @@ def groovy_junit_test(
         name = name,
         deps = test_deps,
         srcs = tests,
-        data = data,
-        resources = resources,
-        jvm_flags = jvm_flags,
-        size = size,
-        tags = tags,
-    )
-
-def spock_test(
-        name,
-        specs,
-        deps = [],
-        groovy_srcs = [],
-        java_srcs = [],
-        data = [],
-        resources = [],
-        jvm_flags = [],
-        size = "small",
-        tags = []):
-    groovy_lib_deps = deps + [
-        "//external:junit",
-        "//external:spock",
-    ]
-    test_deps = deps + [
-        "//external:junit",
-        "//external:spock",
-    ]
-
-    if len(specs) == 0:
-        fail("Must provide at least one file in specs")
-
-    # Put all Java sources into a Java library
-    if java_srcs:
-        java_library(
-            name = name + "-javalib",
-            srcs = java_srcs,
-            testonly = 1,
-            deps = deps + [
-                "//external:junit",
-                "//external:spock",
-            ],
-        )
-        groovy_lib_deps += [name + "-javalib"]
-        test_deps += [name + "-javalib"]
-
-    # Put all specs and Groovy sources into a Groovy library
-    groovy_library(
-        name = name + "-groovylib",
-        srcs = specs + groovy_srcs,
-        testonly = 1,
-        deps = groovy_lib_deps,
-    )
-    test_deps += [name + "-groovylib"]
-
-    # Create a groovy test
-    groovy_test(
-        name = name,
-        deps = test_deps,
-        srcs = specs,
         data = data,
         resources = resources,
         jvm_flags = jvm_flags,
