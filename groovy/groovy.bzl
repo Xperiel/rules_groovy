@@ -356,12 +356,14 @@ def spock_test(
         size = "small",
         tags = []):
     groovy_lib_deps = deps + [
-        "@maven//:junit",
         "@maven//:org_spockframework_spock_core",
+        "@maven//:org_apache_groovy_groovy_all",
+        "@maven//:junit_junit",
     ]
     test_deps = deps + [
-        "@maven//:junit",
         "@maven//:org_spockframework_spock_core",
+        "@maven//:org_apache_groovy_groovy_all",
+        "@maven//:junit_junit",
     ]
 
     if len(specs) == 0:
@@ -374,8 +376,9 @@ def spock_test(
             srcs = java_srcs,
             testonly = 1,
             deps = deps + [
-                "@maven//:junit",
                 "@maven//:org_spockframework_spock_core",
+                "@maven//:org_apache_groovy_groovy_all",
+                "@maven//:junit_junit",
             ],
         )
         groovy_lib_deps += [name + "-javalib"]
