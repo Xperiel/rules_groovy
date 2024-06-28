@@ -301,7 +301,7 @@ def spock_test(
         tags = tags,
     )
 
-_groovy_test = rule(
+    _groovy_test = rule(
     attrs = {
         "srcs": attr.label_list(
             mandatory = True,
