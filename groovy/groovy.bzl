@@ -243,65 +243,7 @@ def _groovy_test_impl(ctx):
         runfiles = ctx.runfiles(files = all_deps.to_list() + ctx.files.data + ctx.files._jdk),
     )
 
-def spock_test(
-        name,
-        specs,
-        deps = [],
-        groovy_srcs = [],
-        java_srcs = [],
-        data = [],
-        resources = [],
-        jvm_flags = [],
-        size = "small",
-        tags = []):
-    groovy_lib_deps = deps + [
-        "@maven//:junit",
-        "@maven//:org_spockframework_spock_core",
-    ]
-    test_deps = deps + [
-        "@maven//:junit",
-        "@maven//:org_spockframework_spock_core",
-    ]
-
-    if len(specs) == 0:
-        fail("Must provide at least one file in specs")
-
-    # Put all Java sources into a Java library
-    if java_srcs:
-        java_library(
-            name = name + "-javalib",
-            srcs = java_srcs,
-            testonly = 1,
-            deps = deps + [
-                "@maven//:junit",
-                "@maven//:org_spockframework_spock_core",
-            ],
-        )
-        groovy_lib_deps += [name + "-javalib"]
-        test_deps += [name + "-javalib"]
-
-    # Put all specs and Groovy sources into a Groovy library
-    groovy_library(
-        name = name + "-groovylib",
-        srcs = specs + groovy_srcs,
-        testonly = 1,
-        deps = groovy_lib_deps,
-    )
-    test_deps += [name + "-groovylib"]
-
-    # Create a groovy test
-    _groovy_test(
-        name = name,
-        deps = test_deps,
-        srcs = specs,
-        data = data,
-        resources = resources,
-        jvm_flags = jvm_flags,
-        size = size,
-        tags = tags,
-    )
-
-    _groovy_test = rule(
+_groovy_test = rule(
     attrs = {
         "srcs": attr.label_list(
             mandatory = True,
@@ -395,6 +337,64 @@ def groovy_junit_test(
         name = name,
         deps = test_deps,
         srcs = tests,
+        data = data,
+        resources = resources,
+        jvm_flags = jvm_flags,
+        size = size,
+        tags = tags,
+    )
+
+    def spock_test(
+        name,
+        specs,
+        deps = [],
+        groovy_srcs = [],
+        java_srcs = [],
+        data = [],
+        resources = [],
+        jvm_flags = [],
+        size = "small",
+        tags = []):
+    groovy_lib_deps = deps + [
+        "@maven//:junit",
+        "@maven//:org_spockframework_spock_core",
+    ]
+    test_deps = deps + [
+        "@maven//:junit",
+        "@maven//:org_spockframework_spock_core",
+    ]
+
+    if len(specs) == 0:
+        fail("Must provide at least one file in specs")
+
+    # Put all Java sources into a Java library
+    if java_srcs:
+        java_library(
+            name = name + "-javalib",
+            srcs = java_srcs,
+            testonly = 1,
+            deps = deps + [
+                "@maven//:junit",
+                "@maven//:org_spockframework_spock_core",
+            ],
+        )
+        groovy_lib_deps += [name + "-javalib"]
+        test_deps += [name + "-javalib"]
+
+    # Put all specs and Groovy sources into a Groovy library
+    groovy_library(
+        name = name + "-groovylib",
+        srcs = specs + groovy_srcs,
+        testonly = 1,
+        deps = groovy_lib_deps,
+    )
+    test_deps += [name + "-groovylib"]
+
+    # Create a groovy test
+    _groovy_test(
+        name = name,
+        deps = test_deps,
+        srcs = specs,
         data = data,
         resources = resources,
         jvm_flags = jvm_flags,
