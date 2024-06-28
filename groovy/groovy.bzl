@@ -391,7 +391,7 @@ def groovy_junit_test(
     test_deps += [name + "-groovylib"]
 
     # Create a groovy test
-    _groovy_test(
+    groovy_test(
         name = name,
         deps = test_deps,
         srcs = specs,
