@@ -344,7 +344,7 @@ def groovy_junit_test(
         tags = tags,
     )
 
-    def spock_test(
+def spock_test(
         name,
         specs,
         deps = [],
